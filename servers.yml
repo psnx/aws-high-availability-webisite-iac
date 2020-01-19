@@ -55,6 +55,12 @@ Resources:
           CidrIp: 0.0.0.0/0
       VpcId: 
         Fn::ImportValue: !Sub ${EnvironmentName}-VPCID
+  
+  ProfileWithRolesForOurApp:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - UdacityS3ReadOnlyEC2
 
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -70,7 +76,7 @@ Resources:
           aws s3 cp s3://udacity-demo-1/udacity.zip .
           unzip -o udacity.zip
       ImageId: ami-0006ea01070db4b0d
-      #IamInstanceProfile: !Ref ProfileWithRolesForOurApp
+      IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       SecurityGroups:
       - Ref: WebServerSecurityGroup
       InstanceType: t3.small
@@ -83,12 +89,12 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       LaunchConfigurationName: !Ref WebAppLaunchConfig
-      MaxSize: 5
-      MinSize: 3
+      MaxSize: 3
+      MinSize: 2
       TargetGroupARNs: 
         - !Ref WebAppTargetGroup
       VPCZoneIdentifier: 
-        - Fn::ImportValue: !Sub ${EnvironmentName}-PRIV-NETS
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PUB-NETS
 
   WebAppLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
