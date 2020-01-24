@@ -68,7 +68,7 @@ Resources:
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
-      KeyName: !Ref SshKeyName
+      ## KeyName: !Ref SshKeyName #as per requitements, commented out
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
