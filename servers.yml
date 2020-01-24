@@ -152,7 +152,7 @@ Resources:
 Outputs:
   DNSName:
     Description: The URL of the high availability application
-    Value: !GetAtt WebAppLoadBalancer.DNSName
+    Value: !Join ["", ["http://", !GetAtt WebAppLoadBalancer.DNSName]]
     Export:
       Name: !Sub ${EnvironmentName}-DNS
   
