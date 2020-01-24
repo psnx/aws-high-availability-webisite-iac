@@ -8,6 +8,9 @@ Parameters:
   VpcCIDR: 
     Description: IP range for the VPC
     Type: String
+  SshKeyName:
+    Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
+    Type: AWS::EC2::KeyPair::KeyName
       
 Resources:
   WebServerSecurityGroup:
@@ -65,6 +68,7 @@ Resources:
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
+      KeyName: !Ref SshKeyName
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -75,7 +79,7 @@ Resources:
           cd /var/www/html
           aws s3 cp s3://udacity-demo-1/udacity.zip .
           unzip -o udacity.zip
-      ImageId: ami-0006ea01070db4b0d
+      ImageId: ami-04b9e92b5572fa0d1
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       SecurityGroups:
       - Ref: WebServerSecurityGroup
@@ -144,4 +148,5 @@ Resources:
           Values: [/]
       ListenerArn: !Ref Listener
       Priority: 1
-      
+  
+    
