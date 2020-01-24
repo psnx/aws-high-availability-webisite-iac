@@ -19,3 +19,10 @@ aws cloudformation update-stack --stack-name servers --template-body file://serv
 ```
 Update the aboce command as needed, like the region.
 
+The result can be seen here:
+http://serve-webap-1gw2kh3ibs458-201050960.us-east-1.elb.amazonaws.com
+
+Your url can be found be here in AWS managemeng console:
+CloudFormation > Stacks > servers > Outputs
+
+
