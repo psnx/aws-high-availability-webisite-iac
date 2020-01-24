@@ -29,9 +29,9 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+#        - IpProtocol: tcp
+#          FromPort: 22
+#          ToPort: 22
           CidrIp: 0.0.0.0/0
       VpcId:
         Fn::ImportValue: !Sub ${EnvironmentName}-VPCID
@@ -98,7 +98,7 @@ Resources:
       TargetGroupARNs: 
         - !Ref WebAppTargetGroup
       VPCZoneIdentifier: 
-        - Fn::ImportValue: !Sub ${EnvironmentName}-PUB-NETS
+        - Fn::ImportValue: !Sub ${EnvironmentName}-PRIV-NETS
 
   WebAppLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -107,8 +107,8 @@ Resources:
       SecurityGroups: 
         - !Ref LoadBalancerSecurityGroup
       Subnets: 
-        - Fn::ImportValue: !Sub "${EnvironmentName}-PUB1-SN"
-        - Fn::ImportValue: !Sub "${EnvironmentName}-PUB2-SN"
+        - Fn::ImportValue: !Sub "${EnvironmentName}-PRI1-SN"
+        - Fn::ImportValue: !Sub "${EnvironmentName}-PRI2-SN"
       Type: application
 
   WebAppTargetGroup:
@@ -148,5 +148,12 @@ Resources:
           Values: [/]
       ListenerArn: !Ref Listener
       Priority: 1
+
+Outputs:
+  DNSName:
+    Description: The URL of the high availability application
+    Value: !GetAtt WebAppLoadBalancer.DNSName
+    Export:
+      Name: !Sub ${EnvironmentName}-DNS
   
     
