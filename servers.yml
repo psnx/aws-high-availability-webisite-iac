@@ -7,6 +7,7 @@ Parameters:
     Type: String
   VpcCIDR: 
     Description: IP range for the VPC
+    #keys are not used, only here for convenience.
     Type: String
   SshKeyName:
     Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
